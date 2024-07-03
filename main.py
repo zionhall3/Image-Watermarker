@@ -1,7 +1,7 @@
 from PIL import Image, ImageTk, ImageDraw
 from tkinter import *
 import os
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 # image_to_edit = ""
@@ -51,6 +51,28 @@ def select_folder():
 
 def convert_image():
         pass
+        # image = Image.open(image_to_edit)
+        # wm_image = Image.open(watermark_selected)
+
+        # base_img_path = os.path.join(output_folder, "album_art_file.jpg")
+        
+        # # Size watermark relative to size of base image
+        # wm_resized = wm_image.resize((round(image.size[0]*.35), round(image.size[1]*.35)))
+        # wm_mask = wm_resized.convert("RGBA")
+
+        # position = (image.size[0] - wm_resized.size[0], image.size[1] - wm_resized.size[1])
+
+        # transparent = Image.new('RGBA', image.size, (0,0,0,0))
+        # transparent.paste(image, (0, 0))
+        # transparent.paste(wm_mask, position, mask=wm_mask)
+        # transparent.show()
+
+        # # Save watermarked photo
+        # finished_img = transparent.convert("RGB")
+        # finished_img_name = image_to_edit[:-4] + " WM.jpg"
+        # finished_img.save(finished_img_name)
+        # messagebox.showinfo("Finished!", "The now has a watermark!")
+        # os.startfile(output_folder)
 
 select_button = Button(root, height = 2,
                  width = 25,
