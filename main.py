@@ -51,6 +51,11 @@ def select_folder():
 
 def convert_image():
         pass
+
+        # We'll have to use os to likely get to the file paths and save locations.
+
+
+
         # image = Image.open(image_to_edit)
         # wm_image = Image.open(watermark_selected)
 
