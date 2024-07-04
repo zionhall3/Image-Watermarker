@@ -50,7 +50,30 @@ def select_folder():
         folder_button.config(text=Folder_Select_Text2)
 
 def convert_image():
-        pass
+        if image_selected and watermark_selected and output_folder:
+                image_path = os.path.join(image_to_edit)
+                watermark_path = os.path.join(watermark_to_add)
+                image_filename = os.path.basename(image_path)
+                extension = os.path.splitext(image_path)[1]
+                output_path = os.path.join(output_folder, os.path.splitext(image_filename)[0]+extension)
+                # print(image_path)
+                # print(watermark_path)
+
+                image = Image.open(image_path)
+                wm_image = Image.open(watermark_path)
+                wm_resized = wm_image.resize((round(image.size[0]*.35), round(image.size[1]*.35)))
+                wm_mask = wm_resized.convert("RGBA")
+                position = (image.size[0] - wm_resized.size[0], image.size[1] - wm_resized.size[1])
+
+                transparent = Image.new('RGBA', image.size, (0,0,0,0))
+                transparent.paste(image, (0, 0))
+                transparent.paste(wm_mask, position, mask=wm_mask)
+
+                finished_img = transparent.convert("RGB")
+                finished_img_name = image_to_edit[:-4] + " WM.jpg"
+                finished_img.save(finished_img_name)
+                messagebox.showinfo("Finished!", "The now has a watermark!")
+                os.startfile(output_folder)
 
         # We'll have to use os to likely get to the file paths and save locations.
 
