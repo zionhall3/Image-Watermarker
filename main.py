@@ -1,5 +1,5 @@
-from PIL import Image, ImageTk, ImageDraw
-import PIL
+from PIL import Image as PILImage 
+from PIL import ImageTk, ImageDraw
 from tkinter import *
 import os
 from tkinter import filedialog, messagebox
@@ -50,61 +50,57 @@ def select_folder():
         output_folder_selected = True
         folder_button.config(text=Folder_Select_Text2)
 
+
+def restart():
+        global image_selected
+        image_selected = False
+        global image_to_edit
+        image_to_edit = ""
+
+        global watermark_selected 
+        watermark_selected = False
+        global watermark_to_add
+        watermark_to_add = ""
+
+
+        global output_folder_selected 
+        output_folder_selected = False
+        global output_folder
+        output_folder = ""
+
+        select_button.config(text=Image_Select_Text1)
+        watermark_button.config(text=Watermark_Select_Text1)
+        folder_button.config(text=Folder_Select_Text1)
+
+
 def convert_image():
         if image_selected and watermark_selected and output_folder:
                 image_path = os.path.join(image_to_edit)
                 watermark_path = os.path.join(watermark_to_add)
                 image_filename = os.path.basename(image_path)
                 extension = os.path.splitext(image_path)[1]
-                output_path = os.path.join(output_folder, os.path.splitext(image_filename)[0]+extension)
-                # print(image_path)
-                # print(watermark_path)
+                finished_img_name = image_filename + " WM."
+                output_path = os.path.join(output_folder, os.path.splitext(finished_img_name)[0]+extension)
 
-                image = Image.open(image_path)
+                image = PILImage.open(image_path)
                 
-                wm_image = Image.open(watermark_path)
+                wm_image = PILImage.open(watermark_path)
                 
                 wm_resized = wm_image.resize((round(image.size[0]*.35), round(image.size[1]*.35)))
                 wm_mask = wm_resized.convert("RGBA")
                 position = (image.size[0] - wm_resized.size[0], image.size[1] - wm_resized.size[1])
 
-                transparent = Image.new('RGBA', image.size, (0,0,0,0))
+                transparent = PILImage.new('RGBA', image.size, (0,0,0,0))
                 transparent.paste(image, (0, 0))
                 transparent.paste(wm_mask, position, mask=wm_mask)
 
                 finished_img = transparent.convert("RGB")
-                finished_img_name = image_to_edit[:-4] + " WM.jpg"
-                finished_img.save(finished_img_name)
+                finished_img.save(output_path)
                 messagebox.showinfo("Finished!", "The image now has a watermark!")
                 os.startfile(output_folder)
+                restart()
 
-        # We'll have to use os to likely get to the file paths and save locations.
-
-
-
-        # image = Image.open(image_to_edit)
-        # wm_image = Image.open(watermark_selected)
-
-        # base_img_path = os.path.join(output_folder, "album_art_file.jpg")
         
-        # # Size watermark relative to size of base image
-        # wm_resized = wm_image.resize((round(image.size[0]*.35), round(image.size[1]*.35)))
-        # wm_mask = wm_resized.convert("RGBA")
-
-        # position = (image.size[0] - wm_resized.size[0], image.size[1] - wm_resized.size[1])
-
-        # transparent = Image.new('RGBA', image.size, (0,0,0,0))
-        # transparent.paste(image, (0, 0))
-        # transparent.paste(wm_mask, position, mask=wm_mask)
-        # transparent.show()
-
-        # # Save watermarked photo
-        # finished_img = transparent.convert("RGB")
-        # finished_img_name = image_to_edit[:-4] + " WM.jpg"
-        # finished_img.save(finished_img_name)
-        # messagebox.showinfo("Finished!", "The now has a watermark!")
-        # os.startfile(output_folder)
-
 select_button = Button(root, height = 2,
                  width = 25,
                  text= Image_Select_Text1, 
