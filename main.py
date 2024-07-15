@@ -1,4 +1,5 @@
 from PIL import Image, ImageTk, ImageDraw
+import PIL
 from tkinter import *
 import os
 from tkinter import filedialog, messagebox
@@ -60,7 +61,9 @@ def convert_image():
                 # print(watermark_path)
 
                 image = Image.open(image_path)
+                
                 wm_image = Image.open(watermark_path)
+                
                 wm_resized = wm_image.resize((round(image.size[0]*.35), round(image.size[1]*.35)))
                 wm_mask = wm_resized.convert("RGBA")
                 position = (image.size[0] - wm_resized.size[0], image.size[1] - wm_resized.size[1])
@@ -72,7 +75,7 @@ def convert_image():
                 finished_img = transparent.convert("RGB")
                 finished_img_name = image_to_edit[:-4] + " WM.jpg"
                 finished_img.save(finished_img_name)
-                messagebox.showinfo("Finished!", "The now has a watermark!")
+                messagebox.showinfo("Finished!", "The image now has a watermark!")
                 os.startfile(output_folder)
 
         # We'll have to use os to likely get to the file paths and save locations.
