@@ -1,5 +1,4 @@
 from PIL import Image as PILImage 
-from PIL import ImageTk, ImageDraw
 from tkinter import *
 import os
 from tkinter import filedialog, messagebox
